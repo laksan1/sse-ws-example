@@ -1,0 +1,19 @@
+{
+  "name": "sse-ws-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sse-mock-server.js",
+  "scripts": {
+    "sse": "node sse-mock-server.js",
+    "sse:dev": "node --watch sse-mock-server.js",
+    "sse:highload": "node --watch sse-highload-server.js",
+    "ws": "node ws-mock-server.js",
+    "ws:dev": "node --watch ws-mock-server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sockjs": "^0.3.24"
+  }
+}
