@@ -5,7 +5,7 @@ const sockjs = require("sockjs");
 
 const PORT = 5500;
 const SOCKJS_ENDPOINT = "/socket";
-const NOTIFICATION_INTERVAL_MS = 5000;
+const NOTIFICATION_INTERVAL_MS = 10000;
 const NOTIFICATION_ACTION = "[Cabinet] Add notification success";
 
 const subscribers = new Set();
@@ -138,6 +138,14 @@ function broadcastNotification(fullMessage) {
 }
 
 function handleStompConnection(conn) {
+  let cookieHeader = conn.headers?.cookie;
+  if (!cookieHeader && conn.request?.headers) {
+    cookieHeader = conn.request.headers.cookie;
+  }
+  console.log(`🍪 [${conn.id}] Cookies: ${cookieHeader || "(нет)"}`);
+
+  console.log(`📋 [${conn.id}] Все заголовки:`, conn.headers);
+
   const sessionId = conn.id;
   console.log(`🔌 [${sessionId}] Новое STOMP-соединение установлено.`);
 
@@ -229,6 +237,7 @@ const ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:4200"];
 
 httpServer.on("request", (req, res) => {
   const origin = req.headers.origin;
+
   if (origin && ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
